@@ -1,7 +1,10 @@
-﻿namespace PaparaApp.API.Models.Products.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace PaparaApp.API.Models.Products.DTOs;
 
 public class ProductAddDtoRequest
 {
-    public string Name { get; set; } = null!;
-    public decimal Price { get; set; }
+    [FromHeader] public string Name { get; set; } = null!;
+
+    [FromHeader] public decimal Price { get; set; }
 }
