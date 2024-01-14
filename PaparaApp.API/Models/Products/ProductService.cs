@@ -43,7 +43,6 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         List<Product> products = productRepository.GetAll();
 
 
-
         return products.Select(product => new ProductDto
         {
             Id = product.Id,
@@ -53,6 +52,7 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 
 
         #region 1. way
+
         //List<ProductDto> productDtos = new List<ProductDto>();
 
         //foreach (Product product in products)
@@ -64,6 +64,7 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         //    });
 
         // return productDtos; 
+
         #endregion
     }
 }
