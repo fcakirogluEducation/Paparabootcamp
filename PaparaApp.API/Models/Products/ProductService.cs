@@ -1,25 +1,17 @@
-﻿using PaparaApp.API.Extensions;
+﻿using AutoMapper;
 using PaparaApp.API.Models.Products.DTOs;
 
 namespace PaparaApp.API.Models.Products;
 
-public class ProductService(IProductRepository productRepository) : IProductService
+public class ProductService : IProductService
 {
-    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IMapper _mapper;
+    private readonly IProductRepository productRepository;
 
-    public int Add(ProductAddDtoRequest request)
+    public ProductService(IMapper mapper)
     {
-        int id = new Random().Next(1, 1000);
-
-        Product product = new Product
-        {
-            Id = id,
-            Name = request.Name,
-            Price = request.Price
-        };
-
-        productRepository.Add(product);
-        return product.Id;
+        _mapper = mapper;
+        productRepository = new ProductRepository();
     }
 
     public void Update(ProductUpdateDtoRequest request)
@@ -44,12 +36,10 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         List<Product> products = productRepository.GetAll();
 
 
-        //Mapper Library
-        // Product Entity => ProductDto
-        // AutoMapper
-        // Mapster
+        List<ProductDto> productDtos = _mapper.Map<List<ProductDto>>(products);
 
-        return products.ToDtoList();
+
+        return productDtos;
 
 
         #region 1. way
@@ -67,5 +57,29 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         // return productDtos; 
 
         #endregion
+    }
+
+
+    public ResponseDto<int> Add(ProductAddDtoRequest request)
+    {
+        int id = new Random().Next(1, 1000);
+
+
+
+
+        Product product = new Product
+        {
+            Id = id,
+            Name = request.Name,
+            Price = request.Price!.Value
+        };
+
+        productRepository.Add(product);
+
+
+        return ResponseDto<int>.Fail("hata var");
+
+        return ResponseDto<int>.Success(id);
+        //return new ResponseDto<int> { Data = id };
     }
 }

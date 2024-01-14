@@ -6,6 +6,6 @@ public interface IProductService
 {
     List<ProductDto> GetAll();
     void Delete(int id);
-    int Add(ProductAddDtoRequest request);
+    ResponseDto<int> Add(ProductAddDtoRequest request);
     void Update(ProductUpdateDtoRequest request);
 }

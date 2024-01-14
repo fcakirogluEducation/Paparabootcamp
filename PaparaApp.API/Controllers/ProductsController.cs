@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PaparaApp.API.Models;
 using PaparaApp.API.Models.Products;
 using PaparaApp.API.Models.Products.DTOs;
 
@@ -11,7 +13,13 @@ namespace PaparaApp.API.Controllers;
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    public readonly IProductService productService = new ProductService(new ProductRepository());
+    private readonly IProductService productService;
+
+
+    public ProductsController(IMapper mapper)
+    {
+        productService = new ProductService(mapper);
+    }
 
 
     [HttpGet]
@@ -35,7 +43,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult Add(ProductAddDtoRequest request)
     {
-        int result = productService.Add(request);
+        ResponseDto<int> result = productService.Add(request);
         return Created("", result);
     }
 
@@ -61,7 +69,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult SimpleAdd(ProductAddDtoRequest request, [FromRoute] string version)
     {
-        int result = productService.Add(request);
+        ResponseDto<int> result = productService.Add(request);
         return Created("", result);
     }
 
