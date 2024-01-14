@@ -65,8 +65,6 @@ public class ProductService : IProductService
         int id = new Random().Next(1, 1000);
 
 
-
-
         Product product = new Product
         {
             Id = id,

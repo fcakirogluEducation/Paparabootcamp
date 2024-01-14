@@ -5,6 +5,9 @@ public class ResponseDto<T>
     public T? Data { get; set; }
 
 
+    public List<string>? Errors { get; set; }
+
+
     // static factory method design pattern
     public static ResponseDto<T> Success(T data)
     {
@@ -26,10 +29,7 @@ public class ResponseDto<T>
     {
         return new ResponseDto<T>
         {
-            Errors = new List<string>() { error }
+            Errors = new List<string> { error }
         };
     }
-
-
-    public List<string>? Errors { get; set; }
 }

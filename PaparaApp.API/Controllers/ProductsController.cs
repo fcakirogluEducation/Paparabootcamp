@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PaparaApp.API.Models;
 using PaparaApp.API.Models.Products;
 using PaparaApp.API.Models.Products.DTOs;
 
@@ -43,7 +42,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult Add(ProductAddDtoRequest request)
     {
-        ResponseDto<int> result = productService.Add(request);
+        Models.ResponseDto<int> result = productService.Add(request);
         return Created("", result);
     }
 
@@ -69,7 +68,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult SimpleAdd(ProductAddDtoRequest request, [FromRoute] string version)
     {
-        ResponseDto<int> result = productService.Add(request);
+        Models.ResponseDto<int> result = productService.Add(request);
         return Created("", result);
     }
 
