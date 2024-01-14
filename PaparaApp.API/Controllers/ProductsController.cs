@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PaparaApp.API.Models.Products;
+using PaparaApp.API.Models.Products.DTOs;
 
 namespace PaparaApp.API.Controllers;
 
@@ -16,37 +17,28 @@ public class ProductsController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        // Object to Json = Serialiation
-        // Json to Object = Deserialiation
-        // return new OkObjectResult("all products");
-
         return Ok(productService.GetAll());
     }
 
     [HttpPost]
-    public IActionResult Add()
+    public IActionResult Add(ProductAddDtoRequest request)
     {
-        return Created("", new Product { Id = 1, Name = "Product 3", Price = 2 });
-        //return new CreatedResult("", 10);
+        //complex type => request body
+        //simple type => request query string
+        int result = productService.Add(request);
+        return Created("", result);
     }
+
 
     [HttpPut]
     public IActionResult Update()
     {
         return NoContent();
-        //return new NoContentResult();
     }
 
     [HttpDelete]
     public IActionResult Delete()
     {
         return NoContent();
-        //return new NoContentResult();
-    }
-
-    [NonAction]
-    public string GetFullName(string firstName, string lastName)
-    {
-        return $"{firstName} {lastName}";
     }
 }
