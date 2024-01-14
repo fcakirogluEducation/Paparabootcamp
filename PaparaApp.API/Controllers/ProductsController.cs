@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using PaparaApp.API.Models.Products;
 using PaparaApp.API.Models.Products.DTOs;
 
@@ -12,12 +13,31 @@ namespace PaparaApp.API.Controllers;
 [ApiController]
 public class ProductsController : ControllerBase
 {
+    private readonly IFileProvider _fileProvider;
     private readonly IProductService productService;
 
-
-    public ProductsController(IMapper mapper)
+    public ProductsController(IMapper mapper, IFileProvider fileProvider)
     {
+        _fileProvider = fileProvider;
         productService = new ProductService(mapper);
+    }
+
+
+    [Route("SaveFile")]
+    [HttpPost]
+    public IActionResult SavePicture(IFormFile file)
+    {
+        IDirectoryContents pictureDirectory = _fileProvider.GetDirectoryContents("wwwroot");
+
+        IFileInfo pictures = pictureDirectory.Where(x => x.Name == "pictures")!.Single();
+
+
+        string path = Path.Combine(pictures.PhysicalPath!, file.FileName);
+
+        using FileStream stream = new FileStream(path, FileMode.Create);
+        file.CopyTo(stream);
+
+        return Created($"/pictures/{file.FileName}", null);
     }
 
 
