@@ -6,11 +6,6 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 {
     private readonly IProductRepository _productRepository = productRepository;
 
-    public List<Product> GetAll()
-    {
-        return productRepository.GetAll();
-    }
-
     public int Add(ProductAddDtoRequest request)
     {
         int id = new Random().Next(1, 1000);
@@ -24,5 +19,51 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 
         productRepository.Add(product);
         return product.Id;
+    }
+
+    public void Update(ProductUpdateDtoRequest request)
+    {
+        Product product = new Product
+        {
+            Id = request.Id,
+            Name = request.Name,
+            Price = request.Price
+        };
+
+        productRepository.Update(product);
+    }
+
+    public void Delete(int id)
+    {
+        productRepository.Delete(id);
+    }
+
+    public List<ProductDto> GetAll()
+    {
+        List<Product> products = productRepository.GetAll();
+
+
+
+        return products.Select(product => new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price
+        }).ToList();
+
+
+        #region 1. way
+        //List<ProductDto> productDtos = new List<ProductDto>();
+
+        //foreach (Product product in products)
+        //    productDtos.Add(new ProductDto
+        //    {
+        //        Id = product.Id,
+        //        Name = product.Name,
+        //        Price = product.Price
+        //    });
+
+        // return productDtos; 
+        #endregion
     }
 }
