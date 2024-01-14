@@ -1,4 +1,5 @@
-﻿using PaparaApp.API.Models.Products.DTOs;
+﻿using PaparaApp.API.Extensions;
+using PaparaApp.API.Models.Products.DTOs;
 
 namespace PaparaApp.API.Models.Products;
 
@@ -43,12 +44,12 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         List<Product> products = productRepository.GetAll();
 
 
-        return products.Select(product => new ProductDto
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Price = product.Price
-        }).ToList();
+        //Mapper Library
+        // Product Entity => ProductDto
+        // AutoMapper
+        // Mapster
+
+        return products.ToDtoList();
 
 
         #region 1. way
