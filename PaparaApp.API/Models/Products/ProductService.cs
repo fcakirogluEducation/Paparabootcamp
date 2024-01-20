@@ -6,37 +6,40 @@ namespace PaparaApp.API.Models.Products;
 public class ProductService : IProductService
 {
     private readonly IMapper _mapper;
-    private readonly IProductRepository productRepository;
+    private readonly ProductHelper _productHelper;
+    private readonly IProductRepository _productRepository;
 
-    public ProductService(IMapper mapper)
+    public ProductService(IMapper mapper, IProductRepository productRepository, ProductHelper productHelper)
     {
         _mapper = mapper;
-        productRepository = new ProductRepository();
+        _productRepository = productRepository;
+        _productHelper = productHelper;
     }
 
     public void Update(ProductUpdateDtoRequest request)
     {
-        Product product = new Product
+        var product = new Product
         {
             Id = request.Id,
             Name = request.Name,
             Price = request.Price
         };
 
-        productRepository.Update(product);
+        _productRepository.Update(product);
     }
 
     public void Delete(int id)
     {
-        productRepository.Delete(id);
+        _productHelper.CalculateTax(200);
+        _productRepository.Delete(id);
     }
 
     public List<ProductDto> GetAll()
     {
-        List<Product> products = productRepository.GetAll();
+        var products = _productRepository.GetAll();
 
 
-        List<ProductDto> productDtos = _mapper.Map<List<ProductDto>>(products);
+        var productDtos = _mapper.Map<List<ProductDto>>(products);
 
 
         return productDtos;
@@ -62,20 +65,20 @@ public class ProductService : IProductService
 
     public ResponseDto<int> Add(ProductAddDtoRequest request)
     {
-        int id = new Random().Next(1, 1000);
+        var id = new Random().Next(1, 1000);
 
 
-        Product product = new Product
+        var product = new Product
         {
             Id = id,
             Name = request.Name,
             Price = request.Price!.Value
         };
 
-        productRepository.Add(product);
+        _productRepository.Add(product);
 
 
-        return ResponseDto<int>.Fail("hata var");
+        // return ResponseDto<int>.Fail("hata var");
 
         return ResponseDto<int>.Success(id);
         //return new ResponseDto<int> { Data = id };

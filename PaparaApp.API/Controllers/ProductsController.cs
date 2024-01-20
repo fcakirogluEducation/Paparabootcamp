@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using PaparaApp.API.Extensions;
 using PaparaApp.API.Models.Products;
 using PaparaApp.API.Models.Products.DTOs;
+using PaparaApp.API.SOLID.ISP;
 
 namespace PaparaApp.API.Controllers;
 
@@ -14,12 +16,13 @@ namespace PaparaApp.API.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IFileProvider _fileProvider;
-    private readonly IProductService productService;
+    private readonly IProductService _productService;
 
-    public ProductsController(IMapper mapper, IFileProvider fileProvider)
+    public ProductsController(IMapper mapper, IFileProvider fileProvider, IProductService productService)
     {
         _fileProvider = fileProvider;
-        productService = new ProductService(mapper);
+
+        _productService = productService;
     }
 
 
@@ -27,14 +30,14 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult SavePicture(IFormFile file)
     {
-        IDirectoryContents pictureDirectory = _fileProvider.GetDirectoryContents("wwwroot");
+        var pictureDirectory = _fileProvider.GetDirectoryContents("wwwroot");
 
-        IFileInfo pictures = pictureDirectory.Where(x => x.Name == "pictures")!.Single();
+        var pictures = pictureDirectory.Where(x => x.Name == "pictures")!.Single();
 
 
-        string path = Path.Combine(pictures.PhysicalPath!, file.FileName);
+        var path = Path.Combine(pictures.PhysicalPath!, file.FileName);
 
-        using FileStream stream = new FileStream(path, FileMode.Create);
+        using var stream = new FileStream(path, FileMode.Create);
         file.CopyTo(stream);
 
         return Created($"/pictures/{file.FileName}", null);
@@ -44,25 +47,35 @@ public class ProductsController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(productService.GetAll());
+        double price = 200;
+        var kdv = price.CalculateTax();
+
+        var user = new { Name = "Ahmet", Surname = "Yıldız" };
+
+
+        user.Name.GetFullName(user.Surname);
+        var fullName = new StringHelper().GetFullName(user.Name, user.Surname);
+
+
+        return Ok(_productService.GetAll());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
-        return Ok(productService.GetAll());
+        return Ok(_productService.GetAll());
     }
 
     [HttpGet("page/{page}/size/{size}")]
     public IActionResult GetProductsWithPaged(int page, int size)
     {
-        return Ok(productService.GetAll());
+        return Ok(_productService.GetAll());
     }
 
     [HttpPost]
     public IActionResult Add(ProductAddDtoRequest request)
     {
-        Models.ResponseDto<int> result = productService.Add(request);
+        var result = _productService.Add(request);
         return Created("", result);
     }
 
@@ -70,14 +83,14 @@ public class ProductsController : ControllerBase
     [HttpPut]
     public IActionResult Update(ProductUpdateDtoRequest request)
     {
-        productService.Update(request);
+        _productService.Update(request);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        productService.Delete(id);
+        _productService.Delete(id);
         return NoContent();
     }
 
@@ -88,7 +101,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult SimpleAdd(ProductAddDtoRequest request, [FromRoute] string version)
     {
-        Models.ResponseDto<int> result = productService.Add(request);
+        var result = _productService.Add(request);
         return Created("", result);
     }
 
