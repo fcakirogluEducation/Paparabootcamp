@@ -1,10 +1,8 @@
-﻿using System.Text.Json.Serialization;
-
-namespace PaparaApp.API.Models.Products.DTOs;
+﻿namespace PaparaApp.API.Models.Products.DTOs;
 
 public class ProductDto
 {
-    [JsonIgnore] public int Id { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; }
     public decimal Price { get; set; }

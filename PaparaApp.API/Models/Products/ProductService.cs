@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PaparaApp.API.Exceptions;
 using PaparaApp.API.Models.Products.DTOs;
 
 namespace PaparaApp.API.Models.Products;
@@ -18,6 +19,8 @@ public class ProductService : IProductService
 
     public void Update(ProductUpdateDtoRequest request)
     {
+        //
+
         var product = new Product
         {
             Id = request.Id,
@@ -34,15 +37,16 @@ public class ProductService : IProductService
         _productRepository.Delete(id);
     }
 
-    public List<ProductDto> GetAll()
+    public ResponseDto<List<ProductDto>> GetAll()
     {
         var products = _productRepository.GetAll();
 
+        throw new ClientValidationError("client hatası. format yanlış");
 
         var productDtos = _mapper.Map<List<ProductDto>>(products);
 
 
-        return productDtos;
+        return ResponseDto<List<ProductDto>>.Success(productDtos);
 
 
         #region 1. way
@@ -82,5 +86,12 @@ public class ProductService : IProductService
 
         return ResponseDto<int>.Success(id);
         //return new ResponseDto<int> { Data = id };
+    }
+
+    public ProductDto GetById(int id)
+    {
+        var product = _productRepository.GetById(id);
+
+        return _mapper.Map<ProductDto>(product);
     }
 }

@@ -4,7 +4,9 @@ namespace PaparaApp.API.Models.Products;
 
 public interface IProductService
 {
-    List<ProductDto> GetAll();
+    ResponseDto<List<ProductDto>> GetAll();
+
+    ProductDto GetById(int id);
     void Delete(int id);
     ResponseDto<int> Add(ProductAddDtoRequest request);
     void Update(ProductUpdateDtoRequest request);
