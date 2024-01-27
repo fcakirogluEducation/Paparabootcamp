@@ -1,0 +1,19 @@
+-- DDL DML
+-- DDL Data Definition Language
+   -- CREATE
+   -- ALTER
+   -- DROP
+   -- TRUNCATE
+-- DML Data Manipulation Language
+   -- INSERT
+   -- UPDATE
+   -- DELETE
+   -- SELECT ( Join, Group By, Having, Order By, Limit, Offset )   Ex : select * from Products
+
+
+   https://www.learnentityframeworkcore.com/migrations
+   dotnet tool install --global dotnet-ef
+
+   Sql Server Select
+    EF CORE :SELECT [p].[Id], [p].[Description], [p].[Name], [p].[Price] FROM [Products] AS [p]
+    Normal : SELECT Id,Description,Name,Price FROM Products - Declarative - Imperative

@@ -17,6 +17,10 @@ public class ProductAddDtoRequest
     [Required(ErrorMessage = "Ürün fiyatı boş geçilemez!")]
     public decimal? Price { get; set; }
 
+
+    [Required(ErrorMessage = "Ürün açıklama boş geçilemez!")]
+    public string Description { get; set; }
+
     //[ValidateNever]
     //public string Barcode { get; set; } = null!;
 }

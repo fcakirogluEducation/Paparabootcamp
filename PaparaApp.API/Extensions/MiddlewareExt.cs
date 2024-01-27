@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using PaparaApp.API.Exceptions;
-using PaparaApp.API.Models;
+using PaparaApp.API.Models.Shared;
 
 namespace PaparaApp.API.Extensions
 

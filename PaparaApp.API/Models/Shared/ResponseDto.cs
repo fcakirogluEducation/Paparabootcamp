@@ -1,4 +1,4 @@
-﻿namespace PaparaApp.API.Models;
+﻿namespace PaparaApp.API.Models.Shared;
 
 public class ResponseDto<T>
 {

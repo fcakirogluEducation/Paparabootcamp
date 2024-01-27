@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PaparaApp.API.Exceptions;
 using PaparaApp.API.Models.Products.DTOs;
+using PaparaApp.API.Models.Shared;
 
 namespace PaparaApp.API.Models.Products;
 

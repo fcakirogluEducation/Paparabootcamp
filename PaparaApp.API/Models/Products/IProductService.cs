@@ -1,4 +1,5 @@
 ﻿using PaparaApp.API.Models.Products.DTOs;
+using PaparaApp.API.Models.Shared;
 
 namespace PaparaApp.API.Models.Products;
 
