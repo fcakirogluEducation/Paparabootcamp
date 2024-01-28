@@ -1,52 +1,109 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using PaparaApp.API.Models.Definitions;
 using PaparaApp.API.Models.Products.DTOs;
 using PaparaApp.API.Models.Shared;
+using PaparaApp.API.Models.UnitOfWorks;
 
 namespace PaparaApp.API.Models.Products;
 
-public class ProductServiceWithSqlServer(IProductRepository productRepository,IMapper mapper) : IProductService
+public class ProductServiceWithSqlServer(
+    IProductRepository productRepository,
+    IMapper mapper,
+    IProductDefinitionRepository productDefinitionRepository,
+    IUnitOfWork unitOfWork,
+    IMemoryCache cache,
+    IDistributedCache _distributedCache) : IProductService
 {
-	private IProductRepository _productRepository = productRepository;
-	private IMapper _mapper = mapper;
-
-	public ResponseDto<List<ProductDto>> GetAll()
-	{
-
-		var productList = _productRepository.GetAll();
-
-		var productListWithDto= _mapper.Map<List<ProductDto>>(productList);
+    public ResponseDto<List<ProductDto>> GetAll()
+    {
+        //Serializer
+        //  object -> string/xml/json/binary
+        //Deserializer
+        //  string/xml/json/binary -> object
 
 
-		return ResponseDto<List<ProductDto>>.Success(productListWithDto);
-	}
+        var hasDistributedCacheProduct = _distributedCache.GetString("products");
 
-	public ProductDto GetById(int id)
-	{
-		throw new NotImplementedException();
-	}
+        if (hasDistributedCacheProduct != null)
+        {
+            var productListWithDtoWithDistributedCache =
+                JsonSerializer.Deserialize<List<ProductDto>>(hasDistributedCacheProduct);
+            return ResponseDto<List<ProductDto>>.Success(productListWithDtoWithDistributedCache!);
+        }
 
-	public void Delete(int id)
-	{
-		throw new NotImplementedException();
-	}
+        var prodcuctListSerializerString = JsonSerializer.Serialize(productRepository.GetAll());
 
-	public ResponseDto<int> Add(ProductAddDtoRequest request)
-	{
 
-		var product = new Product
-		{
-			Name = request.Name,
-			Price = request.Price!.Value,
-			Description = request.Description
-		};
+        _distributedCache.SetString("products", prodcuctListSerializerString, new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+        });
 
-		_productRepository.Add(product);
 
-		return ResponseDto<int>.Success(product.Id);
-	}
+        // products:1
+        //products:2
 
-	public void Update(ProductUpdateDtoRequest request)
-	{
-		throw new NotImplementedException();
-	}
+
+        //Aside cache pattern
+        // key-value
+        if (cache.TryGetValue("products", out List<ProductDto>? productListWithCache))
+        {
+            return ResponseDto<List<ProductDto>>.Success(productListWithCache!);
+        }
+
+
+        var productList = productRepository.GetAll();
+
+        var productListWithDto = mapper.Map<List<ProductDto>>(productList);
+
+
+        cache.Set("products", productListWithDto, TimeSpan.FromMinutes(1));
+
+
+        return ResponseDto<List<ProductDto>>.Success(productListWithDto);
+    }
+
+    public ProductDto GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ResponseDto<int> Add(ProductAddDtoRequest request)
+    {
+        using var transaction = unitOfWork.BeginTransaction();
+        var product = new Product
+        {
+            Name = request.Name,
+            Price = request.Price!.Value,
+            Description = request.Description,
+            CategoryId = request.CategoryId
+        };
+
+        productRepository.Add(product);
+        unitOfWork.Commit();
+        var productDefinition = new ProductDefinition
+        {
+            StockCount = 100,
+            ProductId = product.Id
+        };
+        productDefinitionRepository.Save(productDefinition);
+
+
+        unitOfWork.Commit();
+        transaction.Commit();
+        return ResponseDto<int>.Success(product.Id);
+    }
+
+    public void Update(ProductUpdateDtoRequest request)
+    {
+        throw new NotImplementedException();
+    }
 }

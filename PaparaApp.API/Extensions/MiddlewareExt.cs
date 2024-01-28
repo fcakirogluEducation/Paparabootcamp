@@ -39,7 +39,6 @@ public static class MiddlewareExt
                 if (exception is null) return;
 
 
-
                 var responseDto = ResponseDto<object>.Fail(exception.Message);
 
                 context.Response.StatusCode = exception switch

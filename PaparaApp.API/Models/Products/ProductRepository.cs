@@ -27,7 +27,6 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-
     public void Update(Product product)
     {
         var productToUpdateIndex = Products.FindIndex(p => p.Id == product.Id);

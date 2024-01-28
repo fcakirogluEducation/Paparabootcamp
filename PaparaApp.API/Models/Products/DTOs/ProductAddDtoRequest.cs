@@ -21,6 +21,8 @@ public class ProductAddDtoRequest
     [Required(ErrorMessage = "Ürün açıklama boş geçilemez!")]
     public string Description { get; set; }
 
+    public int CategoryId { get; set; }
+
     //[ValidateNever]
     //public string Barcode { get; set; } = null!;
 }

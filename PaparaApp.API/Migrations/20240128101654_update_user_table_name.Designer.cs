@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaparaApp.API.Models;
 
@@ -11,9 +12,11 @@ using PaparaApp.API.Models;
 namespace PaparaApp.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240128101654_update_user_table_name")]
+    partial class update_user_table_name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,54 +40,6 @@ namespace PaparaApp.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("PaparaApp.API.Models.Definitions.ProductDefinition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StockCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductDefinitions");
-                });
-
-            modelBuilder.Entity("PaparaApp.API.Models.ProductFeatures.ProductFeature", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Width")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("ProductFeatures");
                 });
 
             modelBuilder.Entity("PaparaApp.API.Models.Products.Product", b =>
@@ -142,17 +97,6 @@ namespace PaparaApp.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PaparaApp.API.Models.ProductFeatures.ProductFeature", b =>
-                {
-                    b.HasOne("PaparaApp.API.Models.Products.Product", "Product")
-                        .WithOne("ProductFeatures")
-                        .HasForeignKey("PaparaApp.API.Models.ProductFeatures.ProductFeature", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("PaparaApp.API.Models.Products.Product", b =>
                 {
                     b.HasOne("PaparaApp.API.Models.Categories.Category", "Category")
@@ -173,12 +117,6 @@ namespace PaparaApp.API.Migrations
             modelBuilder.Entity("PaparaApp.API.Models.Categories.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("PaparaApp.API.Models.Products.Product", b =>
-                {
-                    b.Navigation("ProductFeatures")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PaparaApp.API.Models.Users.User", b =>

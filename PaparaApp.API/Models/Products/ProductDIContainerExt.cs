@@ -1,4 +1,6 @@
-﻿namespace PaparaApp.API.Models.Products;
+﻿using PaparaApp.API.Models.Definitions;
+
+namespace PaparaApp.API.Models.Products;
 
 public static class ProductDIContainerExt
 {
@@ -6,6 +8,7 @@ public static class ProductDIContainerExt
     {
         services.AddScoped<IProductRepository, ProductRepositoryWithSqlServer>();
         services.AddScoped<IProductService, ProductServiceWithSqlServer>();
+        services.AddScoped<IProductDefinitionRepository, ProductDefinitionRepository>();
         services.AddScoped<ProductHelper>();
     }
 }
