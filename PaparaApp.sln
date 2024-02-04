@@ -5,7 +5,15 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaparaApp.API", "PaparaApp.API\PaparaApp.API.csproj", "{98757BD8-CC82-4E90-B75C-12C0CDD35168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenAuth.API", "TokenAuth.API\TokenAuth.API.csproj", "{C2A234B0-F000-4ABD-B64E-75EDADDDB9D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenAuth.API", "TokenAuth.API\TokenAuth.API.csproj", "{C2A234B0-F000-4ABD-B64E-75EDADDDB9D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenAuth.Repository", "TokenAuth.Repository\TokenAuth.Repository.csproj", "{1160B578-1D30-4148-94F3-884D3E4E570A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenAuth.Service", "TokenAuth.Service\TokenAuth.Service.csproj", "{16B165CD-341A-48B2-A1CC-115F6044C548}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerService1", "WorkerService1\WorkerService1.csproj", "{A71BF339-095B-4EAC-B3B2-940042DB6731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSenderWorkerService", "EmailSenderWorkerService\EmailSenderWorkerService.csproj", "{41F9F704-BF3D-4068-9926-2608D4CED6BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{C2A234B0-F000-4ABD-B64E-75EDADDDB9D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2A234B0-F000-4ABD-B64E-75EDADDDB9D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2A234B0-F000-4ABD-B64E-75EDADDDB9D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1160B578-1D30-4148-94F3-884D3E4E570A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1160B578-1D30-4148-94F3-884D3E4E570A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1160B578-1D30-4148-94F3-884D3E4E570A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1160B578-1D30-4148-94F3-884D3E4E570A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16B165CD-341A-48B2-A1CC-115F6044C548}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B165CD-341A-48B2-A1CC-115F6044C548}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B165CD-341A-48B2-A1CC-115F6044C548}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B165CD-341A-48B2-A1CC-115F6044C548}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A71BF339-095B-4EAC-B3B2-940042DB6731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A71BF339-095B-4EAC-B3B2-940042DB6731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A71BF339-095B-4EAC-B3B2-940042DB6731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A71BF339-095B-4EAC-B3B2-940042DB6731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41F9F704-BF3D-4068-9926-2608D4CED6BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41F9F704-BF3D-4068-9926-2608D4CED6BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41F9F704-BF3D-4068-9926-2608D4CED6BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41F9F704-BF3D-4068-9926-2608D4CED6BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

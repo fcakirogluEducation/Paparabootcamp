@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TokenAuth.API.DTOs;
-using TokenAuth.API.Services;
+using TokenAuth.Service.DTOs;
+using TokenAuth.Service.Services;
 
 namespace TokenAuth.API.Controllers
 {
